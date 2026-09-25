@@ -107,4 +107,35 @@ LEFT JOIN orders o
 -- PostgreSQL supports : 
 -- SELECT * FROM customers c FULL OUTER JOIN orders o ON c.customer_id = o.customer_id 
 
+SELECT 
+    c.customer_id,  
+    c.customer_name,  
+    COUNT(o.order_id) AS delivered_order_count,  -- COUNT WILL MAKE COUNT AND SUM WILL MAKE + + + SUM    
+    SUM(o.amount) AS total_revenue,  
+    AVG(o.amount) AS average_order_value,  
+FROM customers c 
+INNER JOIN orders o 
+    ON c.customer_id = o.customer_id -- INTERSECTION : INNEER JOIN 
+WHERE c.country = 'India' 
+    AND o.status = 'DELIVERED'
+GROUP BY 
+    c.customer_id, 
+    c.customer_name 
+HAVING COUNT(o.order_id) >= 3 
+    AND SUM(o.amount) > 10000
+    AND AVG(o.amount) > 2000
+ORDER BY total_revenue DESC 
+LIMIT 5
+
+-- HOW MANY : COUNT() 
+-- HOW MUCH : SUM() 
+-- AVERAGE : AVG() 
+
+-- After GROUP BY : 
+-- SELECT column must generally be : 
+-- grouping key 
+-- aggregate 
+-- COUNT, SUM, AVG, MIN, MAX 
+
+-- aliases inside HAVING are risky 
    
